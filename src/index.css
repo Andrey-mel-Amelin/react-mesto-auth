@@ -1,0 +1,69 @@
+@import url(./vendor/normalize.css);
+
+/* ниже подключение шрифта Inter */
+@import url(./vendor/fonts/inter/inter.css);
+
+/* ниже общие свойства страницы */
+@import url(./blocks/page/page.css);
+
+/* ниже блок header */
+@import url(./blocks/header/header.css);
+@import url(./blocks/header/__logo/header__logo.css);
+@import url(./blocks/header/__button/header__button.css);
+
+/* ниже основной контент страницы */
+@import url(./blocks/content/content.css);
+
+/* ниже блок profile */
+@import url(./blocks/profile/profile.css);
+@import url(./blocks/profile/__profile-info/profile__profile-info.css);
+@import url(./blocks/profile/__avatar-container/profile__avatar-container.css);
+@import url(./blocks/profile/__avatar/profile__avatar.css);
+@import url(./blocks/profile/__author-container/profile__author-container.css);
+@import url(./blocks/profile/__author/profile__author.css);
+@import url(./blocks/profile/__edit-btn/profile__edit-btn.css);
+@import url(./blocks/profile/__author-job/profile__author-job.css);
+@import url(./blocks/profile/__add-card-btn/profile__add-card-btn.css);
+
+/* ниже блок elements */
+@import url(./blocks/elements/elements.css);
+
+/* ниже блок element */
+@import url(./blocks/element/element.css);
+@import url(./blocks/element/__image/element__image.css);
+@import url(./blocks/element/__delete/element__delete.css);
+@import url(./blocks/element/__delete/_active/element__delete_active.css);
+@import url(./blocks/element/__title/element__title.css);
+@import url(./blocks/element/__like/element__like.css);
+@import url(./blocks/element/__like-amount/element__like-amount.css);
+@import url(./blocks/element/__like/_active/element__like_active.css);
+
+/* ниже блок footer */
+@import url(./blocks/footer/footer.css);
+@import url(./blocks/footer/__copyright/footer__copyright.css);
+
+/* ниже блок модального окна */
+@import url(./blocks/popup/popup.css);
+@import url(./blocks/popup/_for/popup_for_scale-image.css);
+@import url(./blocks/popup/__image-container/popup__image-container.css);
+@import url(./blocks/popup/__image/popup__image.css);
+@import url(./blocks/popup/__image-title/popup__image-title.css);
+@import url(./blocks/popup/__container/popup__container.css);
+@import url(./blocks/popup/__close-btn/popup__close-btn.css);
+@import url(./blocks/popup/_visible/popup_visible.css);
+
+/* ниже форма редактирования автора */
+@import url(./blocks/form/form.css);
+@import url(./blocks/form/_for/form_for_authorize.css);
+@import url(./blocks/form/__title/form__title.css);
+@import url(./blocks/form/__title/_for/form__title_for_authorize.css);
+@import url(./blocks/form/__input/form__input.css);
+@import url(./blocks/form/__input/_for/form__input_for_authorize.css);
+@import url(./blocks/form/__input/_type/form__input_type_error.css);
+@import url(./blocks/form/__input-error/form__input-error.css);
+@import url(./blocks/form/__input-error/_active/form__input-error_active.css);
+@import url(./blocks/form/__submit/form__submit.css);
+@import url(./blocks/form/__submit/_for/form__submit_for_authorize.css);
+@import url(./blocks/form/__submit/_inactive/form__submit_inactive.css);
+@import url(./blocks/form/__signin/form__signin.css);
+@import url(./blocks/form/__login-link/form__login-link.css);

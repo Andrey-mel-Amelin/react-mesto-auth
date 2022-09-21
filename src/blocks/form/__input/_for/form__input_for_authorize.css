@@ -1,0 +1,12 @@
+.form__input_for_authorize {
+  background-color: transparent;
+  border-bottom: 2px solid rgba(204, 204, 204, 1);
+  color: #ccc;
+  height: 31px;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.form__input_for_authorize:first-of-type {
+  margin: 50px 0 30px;
+}

@@ -1,0 +1,10 @@
+.form_for_authorize {
+  flex: 1;
+  background-color: transparent;
+  padding: 0;
+  max-width: 358px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 60px auto 0;
+}

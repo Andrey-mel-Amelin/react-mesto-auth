@@ -1,0 +1,7 @@
+.profile__avatar-container {
+  cursor: pointer;
+  background-image: url(../../../images/profile/pen.svg);
+  background-size: 26px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
