@@ -1,5 +1,23 @@
-.header__title {
-  margin: 6px 0 0;
+.header__button {
   font-size: 18px;
   line-height: 22px;
+  background-color: transparent;
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  transition: .5s;
+  padding: 0;
+  height: min-content;
+}
+
+.header__button:hover {
+  transition: .5s;
+  opacity: 0.6;
+}
+
+@media screen and (max-width: 767px) {
+  .header__button {
+    font-size: 14px;
+    line-height: 17px;
+  }
 }

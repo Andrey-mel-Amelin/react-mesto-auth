@@ -23,12 +23,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCard, cards, onCardLi
           </div>
           <p className="profile__author-job">{currentUser.about}</p>
         </div>
-        <button
-          className="profile__add-card-btn"
-          onClick={onAddPlace}
-          aria-label="Добавление карточки"
-          type="button"
-        />
+        <button className="profile__add-card-btn" onClick={onAddPlace} aria-label="Добавление карточки" type="button" />
       </section>
       <section className="elements" aria-label="Карточки с изображениями">
         {cards.map((card) => (

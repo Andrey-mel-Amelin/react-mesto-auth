@@ -1,0 +1,9 @@
+.header_for_authorization {
+}
+
+@media screen and (max-width: 767px) {
+  .header_for_authorization {
+    flex-direction: row;
+    justify-content: center;
+  }
+}

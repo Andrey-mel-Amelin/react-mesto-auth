@@ -1,0 +1,23 @@
+@media screen and (max-width: 3000px) {
+
+  .header__menu,
+  .header__menu::before,
+  .header__menu::after {
+    display: block;
+    background-color: #fff;
+    position: absolute;
+    height: 3px;
+    width: 24px;
+    transition: transform .7s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .header__menu::before {
+    content: '';
+    margin-top: -8px;
+  }
+
+  .header__menu::after {
+    content: '';
+    margin-top: 8px;
+  }
+}

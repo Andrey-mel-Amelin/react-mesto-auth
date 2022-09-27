@@ -1,0 +1,15 @@
+@media screen and (max-width: 3000px) {
+  .header__menu_active {
+    background: rgba(255, 255, 255, 0);
+  }
+
+  .header__menu_active::before {
+    margin-top: 0px;
+    transform: rotate(405deg);
+  }
+
+  .header__menu_active::after {
+    margin-top: 0px;
+    transform: rotate(-405deg);
+  }
+}

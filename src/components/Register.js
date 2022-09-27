@@ -1,12 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../index.css';
 
-function Register({ onRegister }) {
+function Register({ onRegister, setLoggedForm }) {
   const [userData, setUserData] = useState({
     email: '',
-    password: ''
+    password: '',
   });
+
+  useEffect(() => {
+    setLoggedForm(false)
+  }, []);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -20,8 +24,7 @@ function Register({ onRegister }) {
     e.preventDefault();
     const { email, password } = userData;
 
-    onRegister(email, password)
-      .catch((err) => {
+    onRegister(email, password).catch((err) => {
       console.log(err);
 
       setUserData((old) => ({

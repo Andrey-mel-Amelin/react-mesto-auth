@@ -1,6 +1,6 @@
 import '../index.css';
 import { useState, useEffect } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route, useHistory, Redirect } from 'react-router-dom';
 import { api } from '../utils/Api';
 import * as auth from '../auth';
 import Header from './Header';
@@ -15,16 +15,22 @@ import { EditProfilePopup } from './EditProfilePopup';
 import { EditAvatarPopup } from './EditAvatarPopup';
 import { AddPlacePopup } from './AddPlacePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import PopupWithState from './PopupWithState';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isStatePopupOpen, setIsStatePopupOpen] = useState(false);
   const [isImagePopupOpen, setImagePopupOpen] = useState(false);
+  const [menuActivity, setMenuActivity] = useState(false);
+  const [resStatus, setResStatus] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedForm, setLoggedForm] = useState('');
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
+  const [userEmail, setUserEmail] = useState('');
   const [cards, setCards] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -37,10 +43,6 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
-  }, [loggedIn]);
-
-  useEffect(() => {
-    if (!loggedIn) return;
     api
       .getUserInfo()
       .then((info) => {
@@ -49,6 +51,7 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
+    setMenuActivity(false);
   }, [loggedIn]);
 
   useEffect(() => {
@@ -89,6 +92,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setImagePopupOpen(false);
+    setIsStatePopupOpen(false);
   }
 
   function handleUpdateUser(data) {
@@ -128,24 +132,40 @@ function App() {
   }
 
   function handleLogin(password, email) {
-    return auth.authorize(password, email).then((data) => {
-      if (!data.token) return;
+    return auth
+      .authorize(password, email)
+      .then((data) => {
+        if (!data.token) return;
 
-      setLoggedIn(true);
-      localStorage.setItem('jwt', data.token);
-      history.push('/');
-    });
+        setLoggedIn(true);
+        localStorage.setItem('jwt', data.token);
+        history.push('/');
+        if (history.location.pathname === '/') {
+          setMenuActivity(false);
+        }
+      })
   }
 
   function handleRegister(password, email) {
-    return auth.register(password, email).then(() => {
-      history.push('/sign-in');
-    });
+    return auth
+      .register(password, email)
+      .then((res) => {
+        if (res) {
+          setResStatus(true)
+          history.push('/sign-in');
+          setIsStatePopupOpen(true);
+        } else {
+          setResStatus(false);
+        }
+      })
   }
 
   function handleLogout() {
+    setUserEmail('');
+    setLoggedIn(false);
     localStorage.removeItem('jwt');
     history.push('/sign-in');
+    setMenuActivity(false)
   }
 
   function getContent() {
@@ -153,37 +173,63 @@ function App() {
 
     if (!jwt) return;
 
-    return auth.checkToken(jwt).then((res) => {
-      if (res) {
-        setLoggedIn(true);
-        history.push('/');
-      }
-    });
+    return auth
+      .checkToken(jwt)
+      .then((res) => {
+        if (res) {
+          setUserEmail(res.data.email);
+          setLoggedIn(true);
+          history.push('/');
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function handleAuthorization() {
+    if (loggedForm) {
+      history.push('/sign-up');
+    } else {
+      history.push('/sign-in');
+    }
+  }
+
+  function handleMenuToggle() {
+    setMenuActivity((active) => !active);
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header loggedIn={loggedIn} history={history} onLogout={handleLogout} />
-          <Switch>
-            <ProtectedRoute exact path="/" loggedIn={loggedIn}>
-              <Main
-                onEditProfile={() => setIsEditProfilePopupOpen(true)}
-                onAddPlace={() => setIsAddPlacePopupOpen(true)}
-                onEditAvatar={() => setIsEditAvatarPopupOpen(true)}
-                onCard={handleCardClick}
-                onCardLike={handleCardLike}
-                onCardDelete={handleCardDelete}
-                cards={cards}
-              />
-            </ProtectedRoute>
-            <Route path="/sign-up">
-              <Register onRegister={handleRegister} />
-            </Route>
-            <Route path="/sign-in">
-              <Login onLogin={handleLogin} />
-            </Route>
-          </Switch>
+        <Header
+          userEmail={userEmail}
+          loggedIn={loggedIn}
+          loggedForm={loggedForm}
+          onLogout={handleLogout}
+          onAuthorization={handleAuthorization}
+          onMenuToggle={handleMenuToggle}
+          menuActivity={menuActivity}
+          history={history}
+        />
+        <Switch>
+          <ProtectedRoute exact path="/" loggedIn={loggedIn}>
+            <Main
+              onEditProfile={() => setIsEditProfilePopupOpen(true)}
+              onAddPlace={() => setIsAddPlacePopupOpen(true)}
+              onEditAvatar={() => setIsEditAvatarPopupOpen(true)}
+              onCard={handleCardClick}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+              cards={cards}
+            />
+          </ProtectedRoute>
+          <Route exact path="/sign-up">
+            <Register onRegister={handleRegister} setLoggedForm={setLoggedForm} />
+          </Route>
+          <Route exact path="/sign-in">
+            <Login onLogin={handleLogin} loggedIn={loggedIn} setLoggedForm={setLoggedForm} />
+          </Route>
+          <Route path="*">{loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}</Route>
+        </Switch>
         <Footer />
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
         <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddCard={handleAddCard} />
@@ -195,6 +241,7 @@ function App() {
           onClose={closeAllPopups}
           isOpen={isImagePopupOpen}
         />
+        <PopupWithState onClose={closeAllPopups} isOpen={isStatePopupOpen} resStatus={resStatus} />
       </div>
     </CurrentUserContext.Provider>
   );

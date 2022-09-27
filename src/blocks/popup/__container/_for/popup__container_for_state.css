@@ -1,0 +1,5 @@
+.popup__container_for_state {
+  background-color: #fff;
+  flex-direction: column;
+  border-radius: 10px;
+}

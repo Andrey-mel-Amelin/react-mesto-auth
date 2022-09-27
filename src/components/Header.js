@@ -1,20 +1,24 @@
-function Header({ loggedIn, history, onLogout }) {
+function Header({ userEmail, loggedIn, onLogout, loggedForm, onAuthorization, history, onMenuToggle, menuActivity }) {
   return (
-    <header className="header">
-      <div className="header__logo"></div>
-      <button
-        className="header__button"
-        type="button"
-        onClick={
-          loggedIn
-            ? onLogout
-            : history.location.pathname === '/sign-in'
-            ? history.push('/sign-up')
-            : history.push('/sign-in')
-        }
-      >
-        {loggedIn ? 'Выйти' : history.location.pathname === '/sign-in' ? 'Регистрация' : 'Войти'}
-      </button>
+    <header className={`header ${!loggedIn ? 'header_for_authorization' : ''}`}>
+      <div className="header__logo">
+        {history.location.pathname === '/' && (
+          <div className="header__menu-container" onClick={onMenuToggle}>
+            <span className={`header__menu ${menuActivity ? 'header__menu_active' : ''}`}></span>
+          </div>
+        )}
+        <button className="header__button" type="button" onClick={loggedIn ? onLogout : onAuthorization}>
+          {!loggedIn ? loggedForm ? 'Регистрация' : 'Войти' : ''}
+        </button>
+      </div>
+      {(menuActivity || window.screen.width >= 767) && (
+        <div className="header__email-user">
+          {userEmail}
+          <button className="header__button" type="button" onClick={loggedIn ? onLogout : onAuthorization}>
+            {loggedIn && 'Выйти'}
+          </button>
+        </div>
+      )}
     </header>
   );
 }

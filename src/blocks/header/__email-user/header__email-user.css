@@ -1,0 +1,18 @@
+.header__email-user {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  display: flex;
+  margin-top: 6px;
+  gap: 24px;
+}
+
+@media screen and (max-width: 767px) {
+  .header__email-user {
+    gap: 18px;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 0;
+    border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+  }
+}

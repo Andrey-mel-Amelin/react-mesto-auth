@@ -8,3 +8,9 @@
   align-items: center;
   margin: 60px auto 0;
 }
+
+@media screen and (max-width: 767px) {
+  .form_for_authorize {
+    max-width: 320px;
+  }
+}

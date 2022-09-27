@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../index.css';
 
-function Login({ onLogin }) {
+function Login({ onLogin, setLoggedForm }) {
   const cleanUserData = {
     password: '',
-    email: ''
+    email: '',
   };
+
+  useEffect(() => {
+    setLoggedForm(true);
+  }, []);
 
   const [userData, setUserData] = useState(cleanUserData);
 
@@ -24,14 +28,13 @@ function Login({ onLogin }) {
 
     if (!email || !password) return;
 
-    onLogin(password, email)
-      .catch((err) => {
-        console.log(err);
-        setUserData((old) => ({
-          ...old,
-          message: 'Что-то пошло не так!',
-        }));
-      });
+    onLogin(password, email).catch((err) => {
+      console.log(err);
+      setUserData((old) => ({
+        ...old,
+        message: 'Что-то пошло не так!',
+      }));
+    });
   }
 
   return (

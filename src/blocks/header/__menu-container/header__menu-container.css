@@ -1,0 +1,12 @@
+.header__menu-container {
+  display: none;
+}
+
+@media screen and (max-width: 767px) {
+  .header__menu-container {
+    display: flex;
+    position: relative;
+    min-width: 24px;
+    min-height: 2px;
+  }
+}
