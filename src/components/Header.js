@@ -1,3 +1,5 @@
+import { Switch, Route, Link} from 'react-router-dom';
+
 function Header({ userEmail, loggedIn, onLogout, loggedForm, onAuthorization, history, onMenuToggle, menuActivity }) {
   return (
     <header className={`header ${!loggedIn ? 'header_for_authorization' : ''}`}>
@@ -7,9 +9,18 @@ function Header({ userEmail, loggedIn, onLogout, loggedForm, onAuthorization, hi
             <span className={`header__menu ${menuActivity ? 'header__menu_active' : ''}`}></span>
           </div>
         )}
-        <button className="header__button" type="button" onClick={loggedIn ? onLogout : onAuthorization}>
-          {!loggedIn ? loggedForm ? 'Регистрация' : 'Войти' : ''}
-        </button>
+        <Switch>
+          <Route path="/sign-up">
+            <Link to="/sign-in" className="header__button">
+              Войти
+            </Link>
+          </Route>
+          <Route path="/sign-in">
+            <Link to="/sign-up" className="header__button">
+              Регистрация
+            </Link>
+          </Route>
+        </Switch>
       </div>
       {(menuActivity || window.screen.width >= 767) && (
         <div className="header__email-user">

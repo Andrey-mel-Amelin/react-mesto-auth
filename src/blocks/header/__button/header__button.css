@@ -8,6 +8,7 @@
   transition: .5s;
   padding: 0;
   height: min-content;
+  text-decoration: none;
 }
 
 .header__button:hover {
