@@ -218,7 +218,6 @@ function App() {
         <Header
           userEmail={userEmail}
           loggedIn={loggedIn}
-          loggedForm={loggedForm}
           onLogout={handleLogout}
           onAuthorization={handleAuthorization}
           onMenuToggle={handleMenuToggle}

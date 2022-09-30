@@ -1,6 +1,6 @@
 import { Switch, Route, Link} from 'react-router-dom';
 
-function Header({ userEmail, loggedIn, onLogout, loggedForm, onAuthorization, history, onMenuToggle, menuActivity }) {
+function Header({ userEmail, loggedIn, onLogout, onAuthorization, history, onMenuToggle, menuActivity }) {
   return (
     <header className={`header ${!loggedIn ? 'header_for_authorization' : ''}`}>
       <div className="header__logo">
