@@ -2,7 +2,7 @@ import '../index.css';
 import { useState, useEffect } from 'react';
 import { Switch, Route, useHistory, Redirect } from 'react-router-dom';
 import { api } from '../utils/Api';
-import * as auth from '../auth';
+import * as auth from '../utils/auth';
 import Header from './Header';
 import ProtectedRoute from './ProtectedRoute';
 import Main from './Main';
@@ -23,6 +23,7 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isStatePopupOpen, setIsStatePopupOpen] = useState(false);
   const [isImagePopupOpen, setImagePopupOpen] = useState(false);
+  const [authMessage, setAuthMessage] = useState('');
   const [menuActivity, setMenuActivity] = useState(false);
   const [resStatus, setResStatus] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -136,7 +137,11 @@ function App() {
       .authorize(password, email)
       .then((data) => {
         if (!data.token) return;
-
+        
+        setAuthMessage('Вы успешно вошли!');
+        setIsStatePopupOpen(true);
+        setResStatus(true);
+        setUserEmail(email);
         setLoggedIn(true);
         localStorage.setItem('jwt', data.token);
         history.push('/');
@@ -144,6 +149,12 @@ function App() {
           setMenuActivity(false);
         }
       })
+      .catch((err) => {
+        console.log(err);
+        setIsStatePopupOpen(true);
+        setResStatus(false);
+        setAuthMessage(err);
+      });
   }
 
   function handleRegister(password, email) {
@@ -151,13 +162,17 @@ function App() {
       .register(password, email)
       .then((res) => {
         if (res) {
-          setResStatus(true)
           history.push('/sign-in');
           setIsStatePopupOpen(true);
-        } else {
-          setResStatus(false);
+          setResStatus(true);
+          setAuthMessage('Регистрация успешно выполнена!')
         }
       })
+      .catch((err) => {
+        setIsStatePopupOpen(true);
+        setResStatus(false);
+        setAuthMessage(err);
+      });
   }
 
   function handleLogout() {
@@ -165,7 +180,7 @@ function App() {
     setLoggedIn(false);
     localStorage.removeItem('jwt');
     history.push('/sign-in');
-    setMenuActivity(false)
+    setMenuActivity(false);
   }
 
   function getContent() {
@@ -241,7 +256,12 @@ function App() {
           onClose={closeAllPopups}
           isOpen={isImagePopupOpen}
         />
-        <PopupWithState onClose={closeAllPopups} isOpen={isStatePopupOpen} resStatus={resStatus} />
+        <PopupWithState
+          authMessage={authMessage}
+          onClose={closeAllPopups}
+          isOpen={isStatePopupOpen}
+          resStatus={resStatus}
+        />
       </div>
     </CurrentUserContext.Provider>
   );

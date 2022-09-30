@@ -4,8 +4,8 @@ import '../index.css';
 
 function Register({ onRegister, setLoggedForm }) {
   const [userData, setUserData] = useState({
-    email: '',
     password: '',
+    email: '',
   });
 
   useEffect(() => {
@@ -22,9 +22,9 @@ function Register({ onRegister, setLoggedForm }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const { email, password } = userData;
+    const { password, email } = userData;
 
-    onRegister(email, password).catch((err) => {
+    onRegister(password, email).catch((err) => {
       console.log(err);
 
       setUserData((old) => ({

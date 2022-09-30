@@ -9,6 +9,9 @@ function request({ url, method = 'POST', data, token }) {
     },
     ...(!!data && { body: JSON.stringify(data) }),
   }).then((res) => {
+    if (!res.ok) {
+      return Promise.reject(`Ошибка: ${res.status}`);
+    }
     return res.json();
   });
 }
@@ -16,14 +19,14 @@ function request({ url, method = 'POST', data, token }) {
 export const authorize = (password, email) => {
   return request({
     url: 'signin',
-    data: {password, email},
+    data: { password, email },
   });
 };
 
 export const register = (password, email) => {
   return request({
     url: 'signup',
-    data: { password, email},
+    data: { password, email },
   });
 };
 
