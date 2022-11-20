@@ -17,3 +17,9 @@
     min-width: 260px;
   }
 }
+
+@media screen and (max-height: 665px) {
+  .form__submit_for_authorize {
+      margin-top: 160px;
+    }
+}

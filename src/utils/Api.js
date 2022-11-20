@@ -1,7 +1,8 @@
 class Api {
-  constructor(baseUrl, headers) {
+  constructor(baseUrl, headers, corsHeaders) {
     this._baseUrl = baseUrl;
     this._headers = headers;
+    this._corsHeaders = corsHeaders;
   }
 
   _getResponseData(res) {
@@ -14,6 +15,8 @@ class Api {
   _getFetch(pathUrl) {
     return fetch(`${this._baseUrl}${pathUrl}`, {
       headers: this._headers,
+      credentials: 'include',
+      mode: 'cors',
     }).then((res) => this._getResponseData(res));
   }
 
@@ -22,6 +25,8 @@ class Api {
       method: 'PATCH',
       headers: this._headers,
       body: bodyConstructor,
+      credentials: 'include',
+      mode: 'cors',
     }).then((res) => this._getResponseData(res));
   }
 
@@ -30,6 +35,8 @@ class Api {
       method: 'POST',
       headers: this._headers,
       body: bodyConstructor,
+      credentials: 'include',
+      mode: 'cors',
     }).then((res) => this._getResponseData(res));
   }
 
@@ -37,6 +44,8 @@ class Api {
     return fetch(`${this._baseUrl}${pathUrl}`, {
       method: 'DELETE',
       headers: this._headers,
+      credentials: 'include',
+      mode: 'cors',
     }).then((res) => this._getResponseData(res));
   }
 
@@ -44,6 +53,8 @@ class Api {
     return fetch(`${this._baseUrl}${pathUrl}`, {
       method: 'PUT',
       headers: this._headers,
+      credentials: 'include',
+      mode: 'cors',
     }).then((res) => this._getResponseData(res));
   }
 
@@ -93,7 +104,6 @@ class Api {
   }
 }
 
-export const api = new Api('https://mesto.nomoreparties.co/v1/cohort-47', {
-  authorization: '5fdce57e-bdf1-4323-905c-051e07965f28',
+export const api = new Api('https://amelin.mesto.backend.nomoredomains.icu', {
   'Content-Type': 'application/json',
 });

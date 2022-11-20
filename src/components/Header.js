@@ -10,13 +10,13 @@ function Header({ userEmail, loggedIn, onLogout, onAuthorization, history, onMen
           </div>
         )}
         <Switch>
-          <Route path="/sign-up">
-            <Link to="/sign-in" className="header__button">
+          <Route path="/signup">
+            <Link to="/signin" className="header__button">
               Войти
             </Link>
           </Route>
-          <Route path="/sign-in">
-            <Link to="/sign-up" className="header__button">
+          <Route path="/signin">
+            <Link to="/signup" className="header__button">
               Регистрация
             </Link>
           </Route>

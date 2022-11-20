@@ -39,7 +39,7 @@ function App() {
     api
       .getCards()
       .then((cards) => {
-        setCards(cards);
+        setCards(cards.reverse());
       })
       .catch((err) => {
         console.log(err);
@@ -60,7 +60,7 @@ function App() {
   }, []);
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.includes(currentUser._id);
 
     api
       .changeLikeCardStatus(card._id, !isLiked)
@@ -134,16 +134,13 @@ function App() {
 
   function handleLogin(password, email) {
     return auth
-      .authorize(password, email)
-      .then((data) => {
-        if (!data.token) return;
-        
+      .login(password, email)
+      .then(() => {
         setAuthMessage('Вы успешно вошли!');
         setIsStatePopupOpen(true);
         setResStatus(true);
         setUserEmail(email);
         setLoggedIn(true);
-        localStorage.setItem('jwt', data.token);
         history.push('/');
         if (history.location.pathname === '/') {
           setMenuActivity(false);
@@ -162,10 +159,10 @@ function App() {
       .register(password, email)
       .then((res) => {
         if (res) {
-          history.push('/sign-in');
+          history.push('/signin');
           setIsStatePopupOpen(true);
           setResStatus(true);
-          setAuthMessage('Регистрация успешно выполнена!')
+          setAuthMessage('Регистрация успешно выполнена!');
         }
       })
       .catch((err) => {
@@ -176,23 +173,23 @@ function App() {
   }
 
   function handleLogout() {
-    setUserEmail('');
-    setLoggedIn(false);
-    localStorage.removeItem('jwt');
-    history.push('/sign-in');
-    setMenuActivity(false);
+    return auth
+      .logout()
+      .then(() => {
+        setUserEmail('');
+        setLoggedIn(false);
+        history.push('/signin');
+        setMenuActivity(false);
+      })
+      .catch((err) => console.log(err));
   }
 
   function getContent() {
-    const jwt = localStorage.getItem('jwt');
-
-    if (!jwt) return;
-
     return auth
-      .checkToken(jwt)
+      .checkToken()
       .then((res) => {
         if (res) {
-          setUserEmail(res.data.email);
+          setUserEmail(res.email);
           setLoggedIn(true);
           history.push('/');
         }
@@ -202,9 +199,9 @@ function App() {
 
   function handleAuthorization() {
     if (loggedForm) {
-      history.push('/sign-up');
+      history.push('/signup');
     } else {
-      history.push('/sign-in');
+      history.push('/signin');
     }
   }
 
@@ -236,13 +233,13 @@ function App() {
               cards={cards}
             />
           </ProtectedRoute>
-          <Route exact path="/sign-up">
+          <Route exact path="/signup">
             <Register onRegister={handleRegister} setLoggedForm={setLoggedForm} />
           </Route>
-          <Route exact path="/sign-in">
+          <Route exact path="/signin">
             <Login onLogin={handleLogin} loggedIn={loggedIn} setLoggedForm={setLoggedForm} />
           </Route>
-          <Route path="*">{loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}</Route>
+          <Route path="*">{loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}</Route>
         </Switch>
         <Footer />
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />

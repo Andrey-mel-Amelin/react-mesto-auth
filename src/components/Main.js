@@ -32,7 +32,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCard, cards, onCardLi
             key={card._id}
             name={card.name}
             link={card.link}
-            likesAmount={card.likes.length}
+            likesAmount={card.likes}
             onCardClick={onCard}
             onCardLike={onCardLike}
             onCardDelete={onCardDelete}

@@ -55,7 +55,7 @@ export function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         className="form__input form__input_info_name-author-job"
         name="about"
         id="name-author-job-input"
-        placeholder="Профессия автора"
+        placeholder="Расскажите о себе"
         type="text"
         minLength="2"
         maxLength="200"

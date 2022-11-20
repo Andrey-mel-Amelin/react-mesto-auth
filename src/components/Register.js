@@ -62,7 +62,7 @@ function Register({ onRegister, setLoggedForm }) {
       </button>
       <p className="form__signin">
         Уже зарегистрированы?&nbsp;
-        <Link className="form__login-link" to="/sign-in">
+        <Link className="form__login-link" to="/signin">
           Войти
         </Link>
       </p>

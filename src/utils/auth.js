@@ -1,12 +1,13 @@
-export const BASE_URL = 'https://auth.nomoreparties.co/';
+export const BASE_URL = 'https://amelin.mesto.backend.nomoredomains.icu/';
 
-function request({ url, method = 'POST', data, token }) {
+function request({ url, method = 'POST', data }) {
   return fetch(`${BASE_URL}${url}`, {
     method: method,
     headers: {
       'Content-Type': 'application/json',
-      ...(!!token && { Authorization: `Bearer ${token}` }),
     },
+    mode: 'cors',
+    credentials: 'include',
     ...(!!data && { body: JSON.stringify(data) }),
   }).then((res) => {
     if (!res.ok) {
@@ -16,13 +17,6 @@ function request({ url, method = 'POST', data, token }) {
   });
 }
 
-export const authorize = (password, email) => {
-  return request({
-    url: 'signin',
-    data: { password, email },
-  });
-};
-
 export const register = (password, email) => {
   return request({
     url: 'signup',
@@ -30,10 +24,23 @@ export const register = (password, email) => {
   });
 };
 
-export const checkToken = (token) => {
+export const login = (password, email) => {
+  return request({
+    url: 'signin',
+    data: { password, email },
+  });
+};
+
+export const logout = () => {
+  return request({
+    url: 'users/signout',
+    method: 'DELETE',
+  });
+}
+
+export const checkToken = () => {
   return request({
     url: 'users/me',
     method: 'GET',
-    token: token,
   });
 };

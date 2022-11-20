@@ -3,8 +3,8 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Card({ name, link, likesAmount, onCardClick, onCardLike, onCardDelete, card }) {
   const currentUser = useContext(CurrentUserContext);
-  const isOwn = card.owner._id === currentUser._id;
-  const isLiked = card.likes.some((i) => i._id === currentUser._id);
+  const isOwn = card.owner === currentUser._id;
+  const isLiked = card.likes.includes(currentUser._id);
 
   return (
     <article className="element">
@@ -22,7 +22,7 @@ function Card({ name, link, likesAmount, onCardClick, onCardLike, onCardDelete, 
         aria-label="Мне нравится"
         type="button"
       ></button>
-      <span className="element__like-amount">{likesAmount > 0 ? likesAmount : ''}</span>
+      <span className="element__like-amount">{likesAmount.length ? likesAmount.length : ''}</span>
     </article>
   );
 }
